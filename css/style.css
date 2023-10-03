@@ -3254,6 +3254,8 @@ body::after {
   display: -ms-grid;
   display: grid;
   gap: 0.625rem;
+  -ms-grid-columns: 46% 1fr 1fr;
+  grid-template-columns: 46% 1fr 1fr;
 }
 
 .rate-item__body-header {
@@ -5360,13 +5362,6 @@ html.with-fancybox body.hide-scrollbar {
   }
 }
 
-@media (min-width: 41.25em) {
-  .rate-item__line {
-    -ms-grid-columns: 37% 21.5% 21.5% 1fr;
-    grid-template-columns: 37% 21.5% 21.5% 1fr;
-  }
-}
-
 @media (min-width: 47.99875em) {
   .phone-request-popup__content {
     padding: 3.125rem 3.75rem;
@@ -5526,11 +5521,6 @@ html.with-fancybox body.hide-scrollbar {
 
   .rate-item__top {
     padding: 1.5625rem 1.875rem;
-  }
-
-  .rate-item__line {
-    -ms-grid-columns: 36% 16.5% 16.5% 1fr;
-    grid-template-columns: 36% 16.5% 16.5% 1fr;
   }
 
   .rate-item__body-header {
@@ -6515,11 +6505,6 @@ html.with-fancybox body.hide-scrollbar {
 
   .billing__item {
     padding: 2.1875rem 2.5rem;
-  }
-
-  .rate-item__line {
-    -ms-grid-columns: 34% 23% 23% 1fr;
-    grid-template-columns: 34% 23% 23% 1fr;
   }
 }
 
@@ -7603,13 +7588,6 @@ html.with-fancybox body.hide-scrollbar {
 
   .login__form {
     max-width: 20rem;
-  }
-}
-
-@media (max-width: 41.25em) {
-  .rate-item__line {
-    -ms-grid-columns: 43% 1fr 1fr;
-    grid-template-columns: 43% 1fr 1fr;
   }
 }
 
