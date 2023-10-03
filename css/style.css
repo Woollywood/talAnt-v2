@@ -1715,6 +1715,18 @@ body::after {
   display: block;
   border-radius: 0.5rem;
   overflow: hidden;
+
+	position: relative;
+	width: 100%;
+	padding-bottom: 65%;
+}
+
+.video-review__media iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
 }
 
 .video-review__icon-inner::before {
@@ -2046,6 +2058,17 @@ body::after {
 .single-video__body {
   border-radius: 0.5rem;
   overflow: hidden;
+	position: relative;
+	width: 100%;
+	padding-bottom: 52%;
+}
+
+.single-video__body iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
 }
 
 .single-video__video {
