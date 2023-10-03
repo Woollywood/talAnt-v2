@@ -1,0 +1,21 @@
+.my-textarea {
+    padding: 1rem 1.5rem;
+    border-radius: 0.25rem;
+    background-color: #f7f7f7;
+    border: .0625rem solid #f7f7f7;
+    color: #2b2b2b;	//#828a99
+    max-width: 100%;
+}
+.terms-checkbox-container {
+    padding: 5px !important;
+    height: unset !important;
+    flex-direction: row !important;
+    gap: 10px;
+    background-color: unset !important;
+    border: none !important;
+    /* margin-bottom: 1.5rem !important; */
+}
+
+.terms-checkbox-container:hover {
+    border: none !important;
+}
