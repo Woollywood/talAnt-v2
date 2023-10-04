@@ -5713,10 +5713,6 @@ html.with-fancybox body.hide-scrollbar {
 	position: relative;
 }
 
-/* .main-block__image--wb-blur-1 img {
-	clip-path: circle(20% at 10% 10%);
-} */
-
 .img-mask {
 	display: none;
 	position: absolute;
