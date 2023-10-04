@@ -31,91 +31,37 @@
 				<div class="body-header__container">
 					<div class="body-header__body">
 						<div class="body-header__logo">
+							<button type="button" class="menu__icon icon-menu" data-da=".body-header__logo, 768, first">
+								<span></span>
+							</button>
 							<a class="body-header__logo-wrapper" href="home.html">
 								<img src="img/logo.svg" alt="logo-img" />
 							</a>
 						</div>
-						<div class="body-header__menu menu">
-							<button type="button" class="menu__icon icon-menu" data-da=".body-header__logo, 768, first">
-								<span></span>
-							</button>
-							<nav class="menu__body">
-								<ul class="menu__list">
-									<li class="menu__item">
-										<a class="menu__link" href="#" data-goto="#section-1">Видео-обзор</a>
-									</li>
-									<li class="menu__item">
-										<a class="menu__link" href="#" data-goto="#section-2">Разработка</a>
-									</li>
-									<li class="menu__item">
-										<a class="menu__link" href="#" data-goto="#section-3">Механика</a>
-									</li>
-									<li class="menu__item">
-										<a class="menu__link" href="#" data-goto="#section-4">Система работы</a>
-									</li>
-									<li class="menu__item">
-										<a class="menu__link" href="#" data-goto="#section-5">Разница</a>
-									</li>
-									<li class="menu__item">
-										<a class="menu__link" href="#" data-goto="#section-6">Сравнение с аналогами</a>
-									</li>
-								</ul>
-							</nav>
-						</div>
-						<div class="body-header__more-menu more-menu" data-spollers>
-							<details class="more-menu__details">
-								<summary class="more-menu__title" data-spoller-close>
-									<div class="more-menu__icon-wrapper">
-										<div class="more-menu__icon _icon-chevron-down"></div>
-									</div>
-									<div class="more-menu__title-text">Ещё</div>
-								</summary>
-								<div class="more-menu__body">
-									<ul class="more-menu__list">
-										<li class="menu__item">
-											<a class="menu__link" href="#" data-goto="#section-7">Упрощение торговли</a>
-										</li>
-										<li class="menu__item">
-											<a class="menu__link" href="#" data-goto="#section-8">Обучение</a>
-										</li>
-										<li class="menu__item">
-											<a class="menu__link" href="#" data-goto="#section-9">На связи 24/7</a>
-										</li>
-										<li class="menu__item">
-											<a class="menu__link" href="#" data-goto="#section-10">Используем сами</a>
-										</li>
-										<li class="menu__item">
-											<a class="menu__link" href="#" data-goto="#section-11">Начинающие и опытные</a>
-										</li>
-										<li class="menu__item">
-											<a class="menu__link" href="#" data-goto="#section-12">Гибкая тарификация</a>
-										</li>
-										<li class="menu__item">
-											<a class="menu__link" href="#" data-goto="#section-13">Объективный взгляд</a>
-										</li>
-										<li class="menu__item">
-											<a class="menu__link" href="#" data-goto="#section-14">Становитесь партнером</a>
-										</li>
-									</ul>
+						<div class="body-header__actions">
+							<div class="body-header__phone phone-header">
+								<a class="phone-header__icon-wrapper" href="tel:89376444446">
+									<div class="phone-header__icon _icon-phone"></div>
+								</a>
+								<div class="phone-header__body">
+									<a href="tel:88004442742" class="phone-header__phone">8-800-444-27-42</a>
+									<a class="phone-header__link" href="#" data-popup="#phone-request-popup"
+										>Заказать звонок</a
+									>
 								</div>
-							</details>
-						</div>
-						<div class="body-header__phone phone-header">
-							<a class="phone-header__icon-wrapper" href="tel:89376444446">
-								<div class="phone-header__icon _icon-phone"></div>
+							</div>
+							<a
+								class="body-header__login login-header"
+								href="#"
+								data-popup="#login-control-panel-popup"
+								data-da=".bottom-header__mobile, 767.98, first">
+								<div class="login-header__icon-wrapper">
+									<div class="login-header__icon _icon-log-in"></div>
+								</div>
+								<div class="login-header__text">Войти</div>
+								<div class="login-header__text login-header__text_mobile">Войти в систему</div>
 							</a>
-							<div class="phone-header__body">
-								<a href="tel:88004442742" class="phone-header__phone">8-800-444-27-42</a>
-								<a class="phone-header__link" href="#" data-popup="#phone-request-popup">Заказать звонок</a>
-							</div>
 						</div>
-						<a class="body-header__login login-header" href="#" data-popup="#login-control-panel-popup" data-da=".bottom-header__mobile, 767.98, first">
-							<div class="login-header__icon-wrapper">
-								<div class="login-header__icon _icon-log-in"></div>
-							</div>
-							<div class="login-header__text">Войти</div>
-							<div class="login-header__text login-header__text_mobile">Войти в систему</div>
-						</a>
 					</div>
 				</div>
 			</div>
@@ -153,6 +99,8 @@
 				</div>
 			</div>
 		</header>
+
+		
 
 		<main class="page">
 			<section class="page__rates rates">

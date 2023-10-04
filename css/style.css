@@ -1064,6 +1064,11 @@ body::after {
           justify-content: space-between;
 }
 
+.body-header__actions {
+	display: flex;
+	gap: 46px;
+}
+
 .body-header__logo-wrapper img {
   max-width: 100%;
   height: auto;
