@@ -5717,7 +5717,7 @@ html.with-fancybox body.hide-scrollbar {
 	display: none;
 	position: absolute;
 	inset: 0;
-	filter: blur(4px);
+	filter: blur(8px);
 }
 
 .img-mask--1 {

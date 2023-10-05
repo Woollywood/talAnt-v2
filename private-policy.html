@@ -7,6 +7,7 @@
 	<meta name="format-detection" content="telephone=no" />
 	<!-- <style>body{opacity: 0;}</style> -->
 	<link rel="stylesheet" href="css/style.css" />
+	<link rel="stylesheet" href="css/my.css" />
 	<link rel="shortcut icon" href="favicon.ico" />
 	<!-- <meta name="robots" content="noindex, nofollow"> -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -303,28 +304,44 @@
 						<div class="phone-request-popup__text text-font">
 							Укажите ваши актуальные данные, мы свяжемся с вами в течении 15 минут
 						</div>
-						<form class="phone-request-popup__form" action="wdh_send_form.php" method="POST" data-ajax="feedback" data-form-theme="Заказ звонка">
+						<form class="phone-request-popup__form" action="wdh_send_form.php" method="POST"
+							data-ajax="feedback" data-form-theme="Заказ звонка">
+
 							<div class="input-wrapper">
-								<input class="phone-request-popup__input input" type="text" name="name" placeholder="Ваше имя" data-required />
+								<input class="phone-request-popup__input input" type="text" name="name"
+									placeholder="Ваше имя" data-required />
 								<div class="input-error">* Это поле обязательно к заполнению</div>
 							</div>
 
 							<div class="input-wrapper">
-								<input class="phone-request-popupinput input _input-phone-mask" name="tel" type="tel" data-required />
+								<input class="phone-request-popupinput input _input-phone-mask" name="tel" id="tel_form" type="tel"
+									data-required />
 								<div class="input-error">* Это поле обязательно к заполнению</div>
 							</div>
 
 							<div class="input-wrapper">
-								<input class="phone-request-popup__input input" type="email" placeholder="Ваш E-mail" name="email" data-required />
+								<input class="phone-request-popup__input input" type="email" placeholder="Ваш E-mail"
+									name="email" data-required />
 								<div class="input-error">* Это поле обязательно к заполнению</div>
 							</div>
 
-							<button class="phone-request-popup__button button" type="submit">Оставить заявку</button>
+							<div class="input-wrapper">
+								<input class="phone-request-popup__input input" type="text" name="promocode"
+									placeholder="Промокод" />
+							</div>
+
+							<textarea class="my-textarea" name="comments" id="comments_form" placeholder="Комментарий" rows="4"></textarea>
+							<div class="input-wrapper terms-checkbox-container">
+								<input id="terms-checkbox" type="checkbox" name="terms" data-required />
+								<div class="input-error">* Это поле обязательно к заполнению</div>
+								<label class="phone-request-popup__text text-font" for="terms-checkbox">
+									Принимаю условия <a href="private-policy.html">обработки персональных данных</a>
+								</label>
+							</div>
+							
+							<button id="submit-button" class="phone-request-popup__button button" type="submit">Оставить
+								заявку</button>
 						</form>
-						<div class="phone-request-popup__private">
-							Нажимая «Ответить на вопросы», я даю согласие на
-							<a href="private-policy.html">обработку персональных данных</a>
-						</div>
 					</div>
 				</div>
 			</div>
