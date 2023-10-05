@@ -83,8 +83,8 @@ $GLOBALS['oauth_token']='8C0000013B80B90F';
 	
 	
 	
-	echo $result_config.'<br><br><br>';
-	echo $result;
+	echo $result_config;
+	// echo $result;
 
 
 

@@ -16806,7 +16806,6 @@
                 } ]
             }
         };
-        renderJson(dataJson);
         window.addEventListener("resize", (e => {
             setTimeout(moreMenyHeaderCheck, 10);
             if (document.querySelector("html").classList.contains("menu-open") && e.target.outerWidth > 767.98) document.querySelector(".menu__icon").click();
@@ -16873,36 +16872,6 @@
             let moreMenuItem = document.querySelector(".body-header__more-menu");
             let moreMenuItems = moreMenuItem.querySelector(".more-menu__list").children;
             if (moreMenuItems.length) moreMenuItem.classList.add("_show"); else moreMenuItem.classList.remove("_show");
-        }
-        function renderJson(json) {
-            let jsonConfig = json.config;
-            renderElem(jsonConfig.user_sklad_price, "Подключение к системе", "Интегрируйте систему учета, чтобы упростить работу сотрудников и сразу выйти на высокий уровень продажна новой площадке.");
-            renderElem(jsonConfig.market_price, "Подключение к Marketplace", "Интегрируйте систему учета, чтобы упростить работу сотрудников и сразу выйти на высокий уровень продажна новой площадке.");
-        }
-        function renderElem(data, title, text) {
-            let elementBody = document.querySelector("[data-fetch]");
-            if (!elementBody) return null;
-            let buildedTemplateHTML = buildTemplateElem(data, title, text);
-            elementBody.insertAdjacentHTML("beforeend", buildedTemplateHTML);
-        }
-        function buildTemplateElem(data, title, text) {
-            let rowsHTML = [];
-            data.forEach((item => {
-                let fixedPrice = fixPrice(item.sum * item.men);
-                rowsHTML.push(`\n\t\t<div class="rate-item__spollers spollers">\n\t\t\t<div class="rate-item__details spollers__item">\n\t\t\t\t<div class="rate-item__spollers-summary spollers__title">\n\t\t\t\t\t<div class="rate-item__content-line rate-item__line">\n\t\t\t\t\t\t<div class="rate-item__content-text text-font">\n\t\t\t\t\t\t\tОт ${item.bol} до ${item.men}\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class="rate-item__content-text text-font">\n\t\t\t\t\t\t\t${item.sum} ₽\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div\n\t\t\t\t\t\t\tclass="rate-item__content-text rate-item__content-text_bold text-font">\n\t\t\t\t\t\t\t${fixedPrice} ₽\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t`);
-            }));
-            let dataHTML = `<div class="rates__column">\n\t\t\t\t\t\t\t<div class="rate-item">\n\t\t\t\t\t\t\t\t<div class="rate-item__top">\n\t\t\t\t\t\t\t\t\t<div class="rate-item__top-title">${title}</div>\n\t\t\t\t\t\t\t\t\t<div class="rate-item__top-text text-font">\n\t\t\t\t\t\t\t\t\t\t${text}\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class="rate-item__body">\n\t\t\t\t\t\t\t\t\t<div class="rate-item__body-header rate-item__line">\n\t\t\t\t\t\t\t\t\t\t<div class="rate-item__header-title">Пользователи:</div>\n\t\t\t\t\t\t\t\t\t\t<div class="rate-item__header-title">Цена за аккаунт:</div>\n\t\t\t\t\t\t\t\t\t\t<div class="rate-item__header-title">Полная цена:</div>\n\t\t\t\t\t\t\t\t\t\t<div class="rate-item__header-title"></div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t<div class="rate-item__content">\n\t\t\t\t\t\t\t\t\t\t${rowsHTML.join("")}\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t`;
-            return dataHTML;
-        }
-        function fixPrice(price) {
-            let result = "";
-            let priceStr = reverseString(String(price));
-            for (let i = 0; i < priceStr.length; i++) if (i % 3 === 0) result += ` ${priceStr[i]}`; else result += `${priceStr[i]}`;
-            result = reverseString(result);
-            return result;
-        }
-        function reverseString(str) {
-            return str.split("").reverse().join("");
         }
         class DynamicAdapt {
             constructor(type) {
