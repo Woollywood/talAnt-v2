@@ -1,40 +1,17 @@
 serverAPILoad();
 
+let description = [
+	['Бесплатно если  <100 товаров ', '-0%', '-30%', '-50%', '-70%', '- 87%', '-90%'],
+	['Бесплатно', '-0%', '-50%', '-60%', '-70%', '-80%', '-86%', '-96%'],
+];
+
 async function serverAPILoad() {
 	let response = await fetch('test_api.php');
 	if (response.ok) {
 		let data = await response.json();
 		console.log(data);
-		// renderJson(data);
+		renderElems(data.config);
 	}
-}
-
-/**
- * Рендер блоков с информацией о тарифах на странице с тарифами
- *
- * @param {object} json Объект с данными о тарифах
- */
-function renderJson(json) {
-	let jsonConfig = json.config;
-
-	renderElem(
-		jsonConfig.user_sklad_price,
-		'Подключение к системе',
-		[
-			'Интегрируйте систему учета, чтобы упростить работу сотрудников и сразу выйти на высокий уровень продажна новой площадке.',
-			'от 16,43 рублей в день',
-		],
-		'first-col'
-	);
-	renderElem(
-		jsonConfig.market_price,
-		'Подключение к Marketplace',
-		[
-			'Интегрируйте систему учета, чтобы упростить работу сотрудников и сразу выйти на высокий уровень продажна новой площадке.',
-			'от 1,64 рубля в день',
-		],
-		'second-col'
-	);
 }
 
 /**
@@ -43,15 +20,24 @@ function renderJson(json) {
  * @param {String} title Заголовок выводимого блока с тарифами
  * @param {String} text Текст выводимого блока с тарифами
  */
-function renderElem(data, title, text, attribute) {
-	let elementBody = document.querySelector('[data-fetch]');
+function renderElems(data) {
+	let elements = document.querySelectorAll('[data-fetch]');
 
-	if (!elementBody) {
+	if (!elements) {
 		return null;
 	}
 
-	let buildedTemplateHTML = buildTemplateElem(data, title, text, attribute);
-	elementBody.insertAdjacentHTML('beforeend', buildedTemplateHTML);
+	elements.forEach((elem, index) => {
+		let template;
+
+		if (elem.dataset.fetch === 'first') {
+			template = buildTemplateElem(data.user_sklad_price, index, description[0]);
+		} else {
+			template = buildTemplateElem(data.market_price, index, description[1]);
+		}
+
+		elem.insertAdjacentHTML('beforeend', template);
+	});
 }
 
 /**
@@ -62,110 +48,85 @@ function renderElem(data, title, text, attribute) {
  * @param {String} text Текст выводимого блока с тарифами
  * @returns {String} Сгенерированный шаблон блока с тарифами
  */
-function buildTemplateElem(data, title, text, attribute) {
-	let rowsHTML = [];
-	data.forEach((item) => {
-		let fixedPrice = fixPrice(item.sum * item.men);
-
-		rowsHTML.push(`
-		<div class="rate-item__spollers spollers">
-			<div class="rate-item__details spollers__item">
-				<div class="rate-item__spollers-summary spollers__title">
-					<div class="rate-item__content-line rate-item__line">
-						<div class="rate-item__content-text text-font">
-							От ${item.bol} до ${item.men}
-						</div>
-						<div class="rate-item__content-text text-font">
-							${item.sum} ₽
-						</div>
-						<div
-							class="rate-item__content-text rate-item__content-text_bold text-font">
-							${fixedPrice} ₽
-						</div>
-					</div>
+function buildTemplateElem(data, index, description) {
+	let dataHTML = `
+		<div class="rate-item__col rate-col">
+			<div class="rate-col__title">
+				Количество <br />
+				пользователей / складов
+			</div>
+			<div class="rate-col__options">
+				<div class="options">
+					${data
+						.map((option, innerIndex) => {
+							return `<div class='options__item rate-col__option-item ${
+								innerIndex === 0 ? `input-first` : null
+							}' ${index == 1 ? `data-min="${option.bol}" data-max="${option.men}"` : null}>
+							<input
+								id='${String(index + 1) + String(innerIndex + 1)}'
+								class='options__input'
+								type='radio'
+								${innerIndex === 0 ? `checked` : null}
+								name='option'
+							/>
+							<label for='${String(index + 1) + String(innerIndex + 1)}' class='options__label'>
+								<span class='options__text'>
+									от ${option.bol} до ${option.men}
+								</span>
+							</label>
+						</div>`;
+						})
+						.join('')}
 				</div>
 			</div>
 		</div>
-		`);
-	});
-
-	let dataHTML = `<div class="rates__column ${attribute}">
-							<div class="rate-item">
-								<div class="rate-item__top">
-									<div class="rate-item__top-title">${title}</div>
-									${
-										Array.isArray(text)
-											? text.reduce(
-													(html, textValue) =>
-														(html += `<div class="rate-item__top-text text-font">${textValue}</div>`),
-													``
-											  )
-											: null
-									}
-									
-								</div>
-								<div class="rate-item__body">
-									<div class="rate-item__body-header rate-item__line">
-										<div class="rate-item__header-title">Пользователи:</div>
-										<div class="rate-item__header-title">Цена за аккаунт:</div>
-										<div class="rate-item__header-title">Полная цена:</div>
-										<div class="rate-item__header-title"></div>
-									</div>
-									<div class="rate-item__content">
-										${rowsHTML.join('')}
-									</div>
-								</div>
-							</div>
+		<div class="rate-item__sep"></div>
+		<div class="rate-item__col rate-col">
+			<div class="rate-col__title">Скидка</div>
+			<div class="rate-col__descriptions">
+				${data
+					.map((option, innerIndex) => {
+						return `
+						<div class="rate-col__description">
+							${description[innerIndex]}
 						</div>
+					`;
+					})
+					.join('')}
+			</div>
+		</div>
 	`;
 
 	return dataHTML;
 }
 
-/**
- * Корректирует формат вывода полной стоимости тарифа (расставляет проблемы каждые 3 знака)
- *
- * @param {string} price - цена тарифа
- * @returns
- */
-function fixPrice(price) {
-	let result = '';
-
-	let priceStr = reverseString(String(price));
-	for (let i = 0; i < priceStr.length; i++) {
-		if (i % 3 === 0) {
-			result += ` ${priceStr[i]}`;
-		} else {
-			result += `${priceStr[i]}`;
-		}
-	}
-
-	result = reverseString(result);
-
-	return result;
-}
-
-/**
- * Переворачивает строку
- *
- * @param {String} str Исходная строка
- * @returns {String} Перевернутая строка
- */
-function reverseString(str) {
-	return str.split('').reverse().join('');
-}
+let isMarketSelected = false;
 
 const rateBody = document.querySelector('.rates__column--marketplace').querySelector('.rate-item__body');
 const rateInput = document.querySelector('.options__range-wrapper');
 rateBody.addEventListener('click', (e) => {
 	const target = e.target;
 
-	if (target.closest('[data-range]')) {
+	if (
+		target.closest('[data-fetch]') &&
+		target.closest('.options__item') &&
+		!target.closest('.options__item').classList.contains('input-first')
+	) {
+		if (!isMarketSelected) {
+			document.querySelector('.options.options--second .options__item input').checked = true;
+			isMarketSelected = true;
+		}
+
 		let bodyBox = rateBody.getBoundingClientRect();
-		let targetBox = target.closest('[data-range]').getBoundingClientRect();
+		let targetBox = target.closest('.options__item').getBoundingClientRect();
 
 		rateInput.classList.add('visible');
-		rateInput.style.top = (targetBox.top - bodyBox.top - (targetBox.height / 2)) + 'px';
-		rateInput.querySelector('input').focus();
+		rateInput.style.top = targetBox.top - bodyBox.top - targetBox.height / 2 + 'px';
+
+		const input = rateInput.querySelector('input');
+		input.setAttribute('min', target.closest('.options__item').dataset.min);
+		input.setAttribute('max', target.closest('.options__item').dataset.max);
+		input.value = target.closest('.options__item').dataset.min;
+		input.focus();
 	}
 });
