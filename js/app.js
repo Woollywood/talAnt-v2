@@ -6216,6 +6216,14 @@
                 }
             }));
         }
+		function commentInit() {
+			let buttons = document.querySelectorAll('[data-comment]');
+			buttons.forEach(button => {
+				button.addEventListener('click', e => {
+					document.getElementById('comments_form').value = button.dataset.comment;
+				})
+			})
+		}
         function menuClose() {
             bodyUnlock();
             document.documentElement.classList.remove("menu-open");
@@ -40875,6 +40883,7 @@
         window["FLS"] = true;
         isWebp();
         menuInit();
+		commentInit();
         spollers();
         formFieldsInit({
             viewPass: true,
