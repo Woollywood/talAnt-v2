@@ -4,7 +4,8 @@ async function serverAPILoad() {
 	let response = await fetch('test_api.php');
 	if (response.ok) {
 		let data = await response.json();
-		renderJson(data);
+		console.log(data);
+		// renderJson(data);
 	}
 }
 
@@ -19,12 +20,20 @@ function renderJson(json) {
 	renderElem(
 		jsonConfig.user_sklad_price,
 		'Подключение к системе',
-		'Интегрируйте систему учета, чтобы упростить работу сотрудников и сразу выйти на высокий уровень продажна новой площадке.'
+		[
+			'Интегрируйте систему учета, чтобы упростить работу сотрудников и сразу выйти на высокий уровень продажна новой площадке.',
+			'от 16,43 рублей в день',
+		],
+		'first-col'
 	);
 	renderElem(
 		jsonConfig.market_price,
 		'Подключение к Marketplace',
-		'Интегрируйте систему учета, чтобы упростить работу сотрудников и сразу выйти на высокий уровень продажна новой площадке.'
+		[
+			'Интегрируйте систему учета, чтобы упростить работу сотрудников и сразу выйти на высокий уровень продажна новой площадке.',
+			'от 1,64 рубля в день',
+		],
+		'second-col'
 	);
 }
 
@@ -34,14 +43,14 @@ function renderJson(json) {
  * @param {String} title Заголовок выводимого блока с тарифами
  * @param {String} text Текст выводимого блока с тарифами
  */
-function renderElem(data, title, text) {
+function renderElem(data, title, text, attribute) {
 	let elementBody = document.querySelector('[data-fetch]');
 
 	if (!elementBody) {
 		return null;
 	}
 
-	let buildedTemplateHTML = buildTemplateElem(data, title, text);
+	let buildedTemplateHTML = buildTemplateElem(data, title, text, attribute);
 	elementBody.insertAdjacentHTML('beforeend', buildedTemplateHTML);
 }
 
@@ -53,7 +62,7 @@ function renderElem(data, title, text) {
  * @param {String} text Текст выводимого блока с тарифами
  * @returns {String} Сгенерированный шаблон блока с тарифами
  */
-function buildTemplateElem(data, title, text) {
+function buildTemplateElem(data, title, text, attribute) {
 	let rowsHTML = [];
 	data.forEach((item) => {
 		let fixedPrice = fixPrice(item.sum * item.men);
@@ -80,13 +89,20 @@ function buildTemplateElem(data, title, text) {
 		`);
 	});
 
-	let dataHTML = `<div class="rates__column">
+	let dataHTML = `<div class="rates__column ${attribute}">
 							<div class="rate-item">
 								<div class="rate-item__top">
 									<div class="rate-item__top-title">${title}</div>
-									<div class="rate-item__top-text text-font">
-										${text}
-									</div>
+									${
+										Array.isArray(text)
+											? text.reduce(
+													(html, textValue) =>
+														(html += `<div class="rate-item__top-text text-font">${textValue}</div>`),
+													``
+											  )
+											: null
+									}
+									
 								</div>
 								<div class="rate-item__body">
 									<div class="rate-item__body-header rate-item__line">
@@ -138,3 +154,18 @@ function fixPrice(price) {
 function reverseString(str) {
 	return str.split('').reverse().join('');
 }
+
+const rateBody = document.querySelector('.rates__column--marketplace').querySelector('.rate-item__body');
+const rateInput = document.querySelector('.options__range-wrapper');
+rateBody.addEventListener('click', (e) => {
+	const target = e.target;
+
+	if (target.closest('[data-range]')) {
+		let bodyBox = rateBody.getBoundingClientRect();
+		let targetBox = target.closest('[data-range]').getBoundingClientRect();
+
+		rateInput.classList.add('visible');
+		rateInput.style.top = (targetBox.top - bodyBox.top - (targetBox.height / 2)) + 'px';
+		rateInput.querySelector('input').focus();
+	}
+});

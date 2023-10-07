@@ -16870,6 +16870,9 @@
         }));
         function moreMenyHeaderCheck() {
             let moreMenuItem = document.querySelector(".body-header__more-menu");
+			if (!moreMenuItem) {
+				return;
+			}
             let moreMenuItems = moreMenuItem.querySelector(".more-menu__list").children;
             if (moreMenuItems.length) moreMenuItem.classList.add("_show"); else moreMenuItem.classList.remove("_show");
         }
