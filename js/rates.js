@@ -54,12 +54,14 @@ function buildTemplateElem(data, index, config) {
 			</div>
 			<div class="rate-col__options">
 				<div class="options">
-					${index === 0 && config.count_items_uslovie ? setCondition(data) : ``}
+					${index === 0 && config.count_items_uslovie ? setCondition(data, index) : ``}
 					${data
 						.map((option, innerIndex) => {
 							return `<div class='options__item rate-col__option-item ${
 								innerIndex === 0 ? `input-first` : null
-							}' ${index == 1 ? `data-min="${option.bol}" data-max="${option.men}"` : null}>
+							}' ${index == 1 ? `data-min="${option.bol}" data-max="${option.men}"` : null} data-calc="${
+								index === 0 ? `system` : `marketplace`
+							}" ${index === 0 ? `data-index="${innerIndex + 1}"` : `data-index="${innerIndex}"`}>
 							<input
 								id='${String(index + 1) + String(innerIndex + 1)}'
 								class='options__input'
@@ -99,8 +101,10 @@ function buildTemplateElem(data, index, config) {
 	return dataHTML;
 }
 
-function setCondition(data) {
-	return `<div class='options__item rate-col__option-item'>
+function setCondition(data, index) {
+	return `<div class='options__item rate-col__option-item' data-calc="${
+		index === 0 ? `system` : `marketplace`
+	}" data-index="0">
 		<input
 			id='condition'
 			class='options__input'
@@ -145,31 +149,48 @@ function setDefaultPrice(body, type, value) {
 
 let isMarketSelected = false;
 
-const rateBody = document.querySelector('.rates__column--marketplace').querySelector('.rate-item__body');
-const rateInput = document.querySelector('.options__range-wrapper');
-rateBody.addEventListener('click', (e) => {
-	const target = e.target;
+const rateBodyList = document.querySelectorAll('.rate-item__body');
+rateBodyList.forEach((rateBody) => {
+	const rateInput = document.querySelector('.options__range-wrapper');
 
-	if (
-		target.closest('[data-fetch]') &&
-		target.closest('.options__item') &&
-		!target.closest('.options__item').classList.contains('input-first')
-	) {
-		if (!isMarketSelected) {
-			document.querySelector('.options.options--second .options__item input').checked = true;
-			isMarketSelected = true;
+	rateBody.addEventListener('click', (e) => {
+		const target = e.target;
+
+		if (
+			target.closest('[data-fetch]') &&
+			target.closest('.options__item') &&
+			!target.closest('.options__item').classList.contains('input-first') &&
+			target.closest('[data-calc="marketplace"]')
+		) {
+			if (!isMarketSelected) {
+				document.querySelector('.options.options--second .options__item input').checked = true;
+				isMarketSelected = true;
+			}
+
+			let bodyBox = rateBody.getBoundingClientRect();
+			let targetBox = target.closest('.options__item').getBoundingClientRect();
+
+			rateInput.classList.add('visible');
+			rateInput.style.top = targetBox.top - bodyBox.top - targetBox.height / 2 + 'px';
+
+			const input = rateInput.querySelector('input');
+			input.setAttribute('min', target.closest('.options__item').dataset.min);
+			input.setAttribute('max', target.closest('.options__item').dataset.max);
+			input.value = target.closest('.options__item').dataset.min;
+			input.focus();
 		}
 
-		let bodyBox = rateBody.getBoundingClientRect();
-		let targetBox = target.closest('.options__item').getBoundingClientRect();
-
-		rateInput.classList.add('visible');
-		rateInput.style.top = targetBox.top - bodyBox.top - targetBox.height / 2 + 'px';
-
-		const input = rateInput.querySelector('input');
-		input.setAttribute('min', target.closest('.options__item').dataset.min);
-		input.setAttribute('max', target.closest('.options__item').dataset.max);
-		input.value = target.closest('.options__item').dataset.min;
-		input.focus();
-	}
+		if (target.closest('[data-calc]')) {
+			// const targetCalc = target.closest('[data-calc]');
+			// const type = targetCalc.dataset.calc;
+			// switch (type) {
+			// 	case 'system':
+			// 		rateSum.setSystem(type, targetCalc.dataset.index);
+			// 		return;
+			// 	case 'marketplace':
+			// 		rateSum.setMarketplace(type, targetCalc.dataset.index);
+			// 		return;
+			// }
+		}
+	});
 });

@@ -9832,6 +9832,11 @@ html.with-fancybox body.hide-scrollbar {
   font-weight: 800;
   line-height: normal;
 }
+@media (max-width: 560px) {
+  .options--second .options__text {
+    font-size: 14px;
+  }
+}
 .options__item {
   position: relative;
   cursor: pointer;
@@ -9859,7 +9864,8 @@ html.with-fancybox body.hide-scrollbar {
 }
 .options__label:before {
   content: "";
-  align-self: center;
+  align-self: flex-start;
+  transform: translateY(26%);
   flex: 0 0 12px;
   width: 12px;
   height: 12px;
@@ -9903,6 +9909,11 @@ html.with-fancybox body.hide-scrollbar {
   display: grid;
   grid-template-columns: 30% auto 1fr;
   gap: 14px;
+}
+@media (max-width: 560px) {
+  .rate-item__body-inner {
+    grid-template-columns: 40% auto 1fr;
+  }
 }
 .rate-item__body-title {
   color: #5A5A5A;
@@ -9970,4 +9981,11 @@ html.with-fancybox body.hide-scrollbar {
   line-height: normal;
   text-decoration: underline;
   text-decoration-color: #5A5A5A;
+}
+
+@media (max-width: 560px) {
+  .rate-item__body {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 }
