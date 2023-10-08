@@ -9757,6 +9757,15 @@ html.with-fancybox body.hide-scrollbar {
 .rate-item__top {
   padding-bottom: 7px;
 }
+.rate-item__top-text {
+  color: #2E2D2D;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: normal;
+}
+.rate-item__top-text span {
+  font-weight: 800;
+}
 .rate-item__top-text:not(:last-child) {
   margin-bottom: 15px;
 }
@@ -9875,13 +9884,20 @@ html.with-fancybox body.hide-scrollbar {
   line-height: normal;
 }
 
+.rates__column {
+  overflow: hidden;
+}
 .rates__column--marketplace .rate-item__body {
   padding: 4px 46px 16px;
 }
 
+.rate-item {
+  height: 100%;
+}
 .rate-item__body {
   position: relative;
   padding: 67px 48px 16px;
+  height: 100%;
 }
 .rate-item__body-inner {
   display: grid;

@@ -12367,6 +12367,15 @@ html.with-fancybox body.hide-scrollbar {
 	}
 
 	&__top-text {
+		color: #2E2D2D;
+		font-size: 16px;
+		font-weight: 300;
+		line-height: normal;
+
+		span {
+			font-weight: 800;
+		}
+
 		&:not(:last-child) {
 			margin-bottom: 15px;
 		}
@@ -12523,6 +12532,8 @@ html.with-fancybox body.hide-scrollbar {
 
 .rates {
 	&__column {
+		overflow: hidden;
+
 		&--marketplace {
 			.rate-item__body {
 				padding: 4px 46px 16px;
@@ -12532,9 +12543,12 @@ html.with-fancybox body.hide-scrollbar {
 }
 
 .rate-item {
+	height: 100%;
+
 	&__body {
 		position: relative;
 		padding: 67px 48px 16px;
+		height: 100%;
 	}
 
 	&__body-inner {

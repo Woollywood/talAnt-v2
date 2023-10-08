@@ -109,7 +109,7 @@
 						<div class="rates__body">
 							<h2 class="rates__title title-font">Тарифы</h2>
 							<div class="rates__row">
-								<div class="rates__column">
+								<div class="rates__column" id="rates-system">
 									<div class="rate-item">
 										<div class="rate-item__top">
 											<div class="rate-item__top-title">Подключение к системе</div>
@@ -117,16 +117,14 @@
 												Интегрируйте систему учета, чтобы упростить работу сотрудников и сразу
 												выйти на высокий уровень продажна новой площадке
 											</div>
-											<div class="rate-item__top-text text-font">от 16,43 рублей в день</div>
+											<div class="rate-item__top-text text-font">Базовая цена: <span><span data-default-price="system">??</span> ₽/мес.</span> </div>
 										</div>
 										<form class="rate-item__body">
-											<div class="rate-item__body-inner" data-fetch="first">
-												
-											</div>
+											<div class="rate-item__body-inner" data-fetch="first"></div>
 										</form>
 									</div>
 								</div>
-								<div class="rates__column rates__column--marketplace">
+								<div class="rates__column rates__column--marketplace" id="rates-marketplace">
 									<div class="rate-item">
 										<div class="rate-item__top">
 											<div class="rate-item__top-title">Подключение к Marketplace</div>
@@ -134,7 +132,7 @@
 												Интегрируйте систему учета, чтобы упростить работу сотрудников и сразу
 												выйти на высокий уровень продажна новой площадке
 											</div>
-											<div class="rate-item__top-text text-font">от 1,64 рубля в день</div>
+											<div class="rate-item__top-text text-font">Базовая цена: <span><span data-default-price="marketplace">??</span> ₽/мес.</span></div>
 										</div>
 										<div class="rate-item__body">
 											<div class="rate-item__body-title">Выберите необходимые маркеты</div>
@@ -174,16 +172,11 @@
 													</div>
 												</div>
 											</form>
-											<div class="rate-item__body-inner" data-fetch="second">
-												
-											</div>
+											<div class="rate-item__body-inner" data-fetch="second"></div>
 											<div class="options__range-wrapper">
 												<div class="options__range-title">Количество карточек</div>
 												<div class="options__range-input">
-													<input
-														class="options__range"
-														type="number"
-														value="10" />
+													<input class="options__range" type="number" value="10" />
 												</div>
 											</div>
 										</div>

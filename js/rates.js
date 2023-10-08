@@ -1,15 +1,9 @@
 serverAPILoad();
 
-let description = [
-	['Бесплатно если  <100 товаров ', '-0%', '-30%', '-50%', '-70%', '- 87%', '-90%'],
-	['Бесплатно', '-0%', '-50%', '-60%', '-70%', '-80%', '-86%', '-96%'],
-];
-
 async function serverAPILoad() {
 	let response = await fetch('test_api.php');
 	if (response.ok) {
 		let data = await response.json();
-		console.log(data);
 		renderElems(data.config);
 	}
 }
@@ -27,13 +21,16 @@ function renderElems(data) {
 		return null;
 	}
 
+	setDefaultPrice(document.getElementById('rates-system'), 'system', data.default_user_sklad_price);
+	setDefaultPrice(document.getElementById('rates-marketplace'), 'marketplace', data.default_market_price);
+
 	elements.forEach((elem, index) => {
 		let template;
 
 		if (elem.dataset.fetch === 'first') {
-			template = buildTemplateElem(data.user_sklad_price, index, description[0]);
+			template = buildTemplateElem(data.user_sklad_price, index, data);
 		} else {
-			template = buildTemplateElem(data.market_price, index, description[1]);
+			template = buildTemplateElem(data.market_price, index, data);
 		}
 
 		elem.insertAdjacentHTML('beforeend', template);
@@ -48,7 +45,7 @@ function renderElems(data) {
  * @param {String} text Текст выводимого блока с тарифами
  * @returns {String} Сгенерированный шаблон блока с тарифами
  */
-function buildTemplateElem(data, index, description) {
+function buildTemplateElem(data, index, config) {
 	let dataHTML = `
 		<div class="rate-item__col rate-col">
 			<div class="rate-col__title">
@@ -57,6 +54,7 @@ function buildTemplateElem(data, index, description) {
 			</div>
 			<div class="rate-col__options">
 				<div class="options">
+					${index === 0 && config.count_items_uslovie ? setCondition(data) : ``}
 					${data
 						.map((option, innerIndex) => {
 							return `<div class='options__item rate-col__option-item ${
@@ -66,12 +64,12 @@ function buildTemplateElem(data, index, description) {
 								id='${String(index + 1) + String(innerIndex + 1)}'
 								class='options__input'
 								type='radio'
-								${innerIndex === 0 ? `checked` : null}
+								${index > 0 && innerIndex === 0 ? `checked` : null}
 								name='option'
 							/>
 							<label for='${String(index + 1) + String(innerIndex + 1)}' class='options__label'>
 								<span class='options__text'>
-									от ${option.bol} до ${option.men}
+									${setLabelText(option)}
 								</span>
 							</label>
 						</div>`;
@@ -84,11 +82,12 @@ function buildTemplateElem(data, index, description) {
 		<div class="rate-item__col rate-col">
 			<div class="rate-col__title">Скидка</div>
 			<div class="rate-col__descriptions">
+				${index === 0 && config.count_items_uslovie ? setConditionDescription(config) : ``}
 				${data
-					.map((option, innerIndex) => {
+					.map((option) => {
 						return `
 						<div class="rate-col__description">
-							${description[innerIndex]}
+							${setDiscount(option.discount)}
 						</div>
 					`;
 					})
@@ -98,6 +97,50 @@ function buildTemplateElem(data, index, description) {
 	`;
 
 	return dataHTML;
+}
+
+function setCondition(data) {
+	return `<div class='options__item rate-col__option-item'>
+		<input
+			id='condition'
+			class='options__input'
+			type='radio'
+			checked
+			name='option'
+		/>
+		<label for='condition' class='options__label'>
+			<span class='options__text'>
+				от ${data[0].bol} до ${data[0].men}
+			</span>
+		</label>
+	</div>`;
+}
+
+function setConditionDescription(data) {
+	return `
+		<div class="rate-col__description">
+			Бесплатно если  <${data.count_items_uslovie} товаров 
+		</div>`;
+}
+
+function setLabelText(data) {
+	if (data.bol + data.men === 0) {
+		return `Без маркетов`;
+	} else {
+		return `от ${data.bol} до ${data.men}`;
+	}
+}
+
+function setDiscount(discount) {
+	if (discount === 100) {
+		return 'Бесплатно';
+	} else {
+		return `${-discount}%`;
+	}
+}
+
+function setDefaultPrice(body, type, value) {
+	body.querySelector(`[data-default-price="${type}"]`).innerHTML = value;
 }
 
 let isMarketSelected = false;
