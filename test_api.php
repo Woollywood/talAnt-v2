@@ -18,7 +18,7 @@ $GLOBALS['oauth_token']='8C0000013B80B90F';
 			$headers[] = 'oauth_token: '.$GLOBALS['oauth_token'];
 			
 			
-			$url = 'http://talant.it/api/index.php';
+			$url = 'https://talant.it/api/index.php';
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -62,7 +62,7 @@ $GLOBALS['oauth_token']='8C0000013B80B90F';
 			$headers[] = 'oauth_token: '.$GLOBALS['oauth_token'];
 			
 			
-			$url = 'http://talant.it/api/index.php';
+			$url = 'https://talant.it/api/index.php';
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

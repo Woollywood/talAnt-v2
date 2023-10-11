@@ -1,10 +1,111 @@
 serverAPILoad();
 
+class Rates {
+	constructor() {
+		this._systemPart = document.querySelector('#rates-system');
+
+		this._marketPart = document.querySelector('#rates-marketplace');
+		this._marketInput = document.querySelector('.options__range-wrapper input');
+
+		this._marketInput.addEventListener('input', (e) => {
+			this.sumMarketRange();
+			this.sumResult();
+		});
+
+		this._marketOptions = this._marketPart.querySelectorAll(`[data-calc="selected-marketplace"]`);
+
+		this._resultJson = document.querySelector('#result_span');
+		this._resultOutput = document.querySelector('[data-rate-sum]');
+		this._resultJsonData = 0;
+
+		this.resultObserver = new MutationObserver((observerEvent) => {
+			this._resultJsonData = JSON.parse(observerEvent[0].addedNodes[0].data).sum_itog;
+			this._resultOutput.innerHTML = this._resultJsonData;
+		});
+
+		this.resultObserver.observe(this._resultJson, {
+			childList: true,
+		});
+
+		this._sklad = 0;
+		this._user = 0;
+		this._items = 0;
+		this._itemsMarket = 0;
+		this._marketsConntected = 0;
+	}
+
+	handleEvent(event) {
+		const target = event.target.closest('[data-calc]');
+		const dataType = target?.dataset.calc;
+
+		if (!dataType) {
+			return;
+		}
+
+		switch (dataType) {
+			case 'system':
+				this.sumSystem(target);
+				break;
+			case 'marketplace':
+				this.sumMarket(target);
+				break;
+			case 'range':
+				this.sumMarketRange(target);
+				break;
+			case 'selected-marketplace':
+				this.sumMarketSelected(target);
+				break;
+			default:
+				break;
+		}
+
+		this.sumResult();
+
+		console.log('calculated...');
+	}
+
+	sumSystem(target) {
+		this._sklad = +target.dataset.to;
+		this._user = +target.dataset.to;
+		this._items = +target.dataset.index === 0 ? 0 : 101;
+	}
+
+	sumMarketRange() {
+		this._itemsMarket = +this._marketInput.value;
+	}
+
+	sumMarket(target) {
+		this.sumMarketRange();
+		this._marketsConntected = Array.from(this._marketOptions).filter(
+			(elem) => elem.querySelector('input').checked
+		).length;
+	}
+
+	sumMarketSelected(target) {
+		this._marketsConntected = Array.from(this._marketOptions).filter(
+			(elem) => elem.querySelector('input').checked
+		).length;
+	}
+
+	sumResult() {
+		console.log(this);
+		xajax_calc_sum(this._sklad, this._user, this._items, this._itemsMarket, this._marketsConntected);
+	}
+}
+
+let rates = null;
+
 async function serverAPILoad() {
 	let response = await fetch('test_api.php');
 	if (response.ok) {
 		let data = await response.json();
 		renderElems(data.config);
+
+		rates = new Rates();
+		rates.sumSystem(document.querySelector('#rates-system').querySelector('[data-calc]'));
+		rates.sumMarket(document.querySelector('#rates-marketplace').querySelector('[data-calc="marketplace"]'));
+		rates.sumResult();
+		document.addEventListener('click', rates);
 	}
 }
 
@@ -59,9 +160,11 @@ function buildTemplateElem(data, index, config) {
 						.map((option, innerIndex) => {
 							return `<div class='options__item rate-col__option-item ${
 								innerIndex === 0 ? `input-first` : null
-							}' ${index == 1 ? `data-min="${option.bol}" data-max="${option.men}"` : null} data-calc="${
-								index === 0 ? `system` : `marketplace`
-							}" ${index === 0 ? `data-index="${innerIndex + 1}"` : `data-index="${innerIndex}"`}>
+							}' ${index == 1 ? `data-min="${option.bol}" data-max="${option.men}"` : null} 
+							data-from="${option.bol}" data-to="${option.men}"
+							data-calc="${index === 0 ? `system` : `marketplace`}" ${
+								index === 0 ? `data-index="${innerIndex + 1}"` : `data-index="${innerIndex}"`
+							}>
 							<input
 								id='${String(index + 1) + String(innerIndex + 1)}'
 								class='options__input'
@@ -104,7 +207,8 @@ function buildTemplateElem(data, index, config) {
 function setCondition(data, index) {
 	return `<div class='options__item rate-col__option-item' data-calc="${
 		index === 0 ? `system` : `marketplace`
-	}" data-index="0">
+	}" data-from="${data[0].bol}" data-to="${data[0].men}"
+	 data-index="0">
 		<input
 			id='condition'
 			class='options__input'
@@ -148,12 +252,16 @@ function setDefaultPrice(body, type, value) {
 }
 
 let isMarketSelected = false;
+const resultSpanJson = document.querySelector('#result_span');
+const resultSpan = document.querySelector('.rates__result-value');
 
 const rateBodyList = document.querySelectorAll('.rate-item__body');
 rateBodyList.forEach((rateBody) => {
 	const rateInput = document.querySelector('.options__range-wrapper');
 
-	rateBody.addEventListener('click', (e) => {
+	let imask = null;
+
+	rateBody.addEventListener('click', async (e) => {
 		const target = e.target;
 
 		if (
@@ -167,6 +275,10 @@ rateBodyList.forEach((rateBody) => {
 				isMarketSelected = true;
 			}
 
+			if (imask) {
+				imask.destroy();
+			}
+
 			let bodyBox = rateBody.getBoundingClientRect();
 			let targetBox = target.closest('.options__item').getBoundingClientRect();
 
@@ -174,23 +286,20 @@ rateBodyList.forEach((rateBody) => {
 			rateInput.style.top = targetBox.top - bodyBox.top - targetBox.height / 2 + 'px';
 
 			const input = rateInput.querySelector('input');
-			input.setAttribute('min', target.closest('.options__item').dataset.min);
-			input.setAttribute('max', target.closest('.options__item').dataset.max);
-			input.value = target.closest('.options__item').dataset.min;
-			input.focus();
-		}
+			const inputMin = target.closest('.options__item').dataset.min;
+			const inputMax = target.closest('.options__item').dataset.max;
+			input.setAttribute('min', inputMin);
+			input.setAttribute('max', inputMax);
 
-		if (target.closest('[data-calc]')) {
-			// const targetCalc = target.closest('[data-calc]');
-			// const type = targetCalc.dataset.calc;
-			// switch (type) {
-			// 	case 'system':
-			// 		rateSum.setSystem(type, targetCalc.dataset.index);
-			// 		return;
-			// 	case 'marketplace':
-			// 		rateSum.setMarketplace(type, targetCalc.dataset.index);
-			// 		return;
-			// }
+			// input.value = target.closest('.options__item').dataset.min;
+
+			imask = IMask(input, {
+				mask: Number,
+				min: +inputMin,
+				max: +inputMax,
+				thousandsSeparator: '',
+			});
+			input.focus();
 		}
 	});
 });

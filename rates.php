@@ -1,3 +1,8 @@
+<?
+	
+include "functions/xajaxFunctionsCalc_sum.php";
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -19,7 +24,7 @@
 			</style>
 		</noscript>
 	</head>
-
+<? $xajax->printJavascript("xajax"); ?>
 	<body>
 		<div class="wrapper">
 			<div class="popup-panel" style="display: none">
@@ -145,7 +150,7 @@
 											<form class="rate-item__marketplace-list">
 												<div class="rate-col__options">
 													<div class="options options--second">
-														<div class="options__item">
+														<div class="options__item" data-calc="selected-marketplace">
 															<input
 																id="ozon"
 																class="options__input"
@@ -155,7 +160,7 @@
 																><span class="options__text">OZON</span></label
 															>
 														</div>
-														<div class="options__item">
+														<div class="options__item" data-calc="selected-marketplace">
 															<input
 																id="yamarket"
 																class="options__input"
@@ -165,7 +170,7 @@
 																><span class="options__text">Яндекс маркет</span></label
 															>
 														</div>
-														<div class="options__item">
+														<div class="options__item" data-calc="selected-marketplace">
 															<input
 																id="wildberries"
 																class="options__input"
@@ -179,10 +184,10 @@
 												</div>
 											</form>
 											<div class="rate-item__body-inner" data-fetch="second"></div>
-											<div class="options__range-wrapper">
+											<div class="options__range-wrapper" data-calc="range">
 												<div class="options__range-title">Количество карточек</div>
 												<div class="options__range-input">
-													<input class="options__range" type="number" value="10" />
+													<input class="options__range" type="number" value="0" />
 												</div>
 											</div>
 										</div>
@@ -191,9 +196,10 @@
 							</div>
 							<div class="rates__result">
 								Итоговая стоимость:
-								<span class="rates__result-value" id="result_span" data-rate-sum>7500,56</span> ₽ /
+								<span class="rates__result-value" data-rate-sum>???</span> ₽ /
 								день.
 							</div>
+							<span id="result_span" style="display: none;"></span>
 						</div>
 					</div>
 				</section>
@@ -494,7 +500,9 @@
 			</div>
 		</div>
 
+		<script src="https://unpkg.com/imask"></script>
 		<script src="js/rates.js"></script>
 		<script src="js/app.js"></script>
+
 	</body>
 </html>
