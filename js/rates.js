@@ -8,6 +8,15 @@ class Rates {
 		this._marketInput = document.querySelector('.options__range-wrapper input');
 
 		this._marketInput.addEventListener('input', (e) => {
+			if (
+				!Array.from(document.querySelectorAll('[data-calc="selected-marketplace"] input')).filter(
+					(input) => input.checked
+				).length
+			) {
+				document.querySelector('.options.options--second .options__item input').checked = true;
+				this.sumMarketSelected();
+			}
+
 			this.sumMarketRange();
 			this.sumResult();
 		});
@@ -35,6 +44,10 @@ class Rates {
 	}
 
 	handleEvent(event) {
+		if (event.pointerId !== -1) {
+			return;
+		}
+
 		const target = event.target.closest('[data-calc]');
 		const dataType = target?.dataset.calc;
 
@@ -50,6 +63,7 @@ class Rates {
 				this.sumMarket(target);
 				break;
 			case 'range':
+				console.log('eqewwq');
 				this.sumMarketRange(target);
 				break;
 			case 'selected-marketplace':
@@ -100,7 +114,7 @@ async function serverAPILoad() {
 	if (response.ok) {
 		let data = await response.json();
 		renderElems(data.config);
-		
+
 		labelsHeightObserve();
 		window.addEventListener('resize', labelsHeightObserve);
 
@@ -289,7 +303,7 @@ rateBodyList.forEach((rateBody) => {
 				(elem) => elem.querySelector('input').checked
 			).length !== 0
 				? (isMarketSelected = true)
-				: null;
+				: (isMarketSelected = false);
 
 			if (!isMarketSelected) {
 				document.querySelector('.options.options--second .options__item input').checked = true;
