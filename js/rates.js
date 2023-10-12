@@ -265,11 +265,29 @@ rateBodyList.forEach((rateBody) => {
 		const target = e.target;
 
 		if (
+			target.closest('[data-calc="marketplace"]') &&
+			target.closest('.options__item').classList.contains('input-first')
+		) {
+			rateInput.classList.remove('visible');
+
+			const input = rateInput.querySelector('input');
+			input.setAttribute('min', 0);
+			input.setAttribute('max', 0);
+			input.value = 0;
+		}
+
+		if (
 			target.closest('[data-fetch]') &&
 			target.closest('.options__item') &&
 			!target.closest('.options__item').classList.contains('input-first') &&
 			target.closest('[data-calc="marketplace"]')
 		) {
+			Array.from(document.querySelectorAll('[data-calc="selected-marketplace"]')).filter(
+				(elem) => elem.querySelector('input').checked
+			).length !== 0
+				? (isMarketSelected = true)
+				: null;
+
 			if (!isMarketSelected) {
 				document.querySelector('.options.options--second .options__item input').checked = true;
 				isMarketSelected = true;
