@@ -100,6 +100,9 @@ async function serverAPILoad() {
 	if (response.ok) {
 		let data = await response.json();
 		renderElems(data.config);
+		
+		labelsHeightObserve();
+		window.addEventListener('resize', labelsHeightObserve);
 
 		rates = new Rates();
 		rates.sumSystem(document.querySelector('#rates-system').querySelector('[data-calc]'));
@@ -321,3 +324,11 @@ rateBodyList.forEach((rateBody) => {
 		}
 	});
 });
+
+function labelsHeightObserve() {
+	let labels = document.querySelectorAll('.options__label');
+	for (const label of labels) {
+		const labelBox = label.getBoundingClientRect();
+		label.style.cssText = `--height: ${labelBox.height}px`;
+	}
+}

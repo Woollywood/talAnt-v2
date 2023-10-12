@@ -12428,8 +12428,37 @@ html.with-fancybox body.hide-scrollbar {
 
 	&--second {
 		flex-direction: row;
+		align-items: flex-start !important;
 
 		.options__label {
+			gap: 10px;
+			padding-left: 0 !important;
+
+			&:before {
+				content: '';
+				position: static !important;
+				align-self: flex-start;
+				transform: translateY(26%) !important;
+				flex: 0 0 12px;
+				width: 12px;
+				height: 12px;
+				border-radius: 50%;
+				border: 1px solid #2e2d2d;
+			}
+	
+			&:after {
+				content: '';
+				transition: all 0.3s ease 0s;
+				width: 6px;
+				height: 6px;
+				border-radius: 50%;
+				transform: translate(0) !important;
+				background-color: transparent;
+				position: absolute;
+				left: 3px;
+				top: 6.5px;
+			}
+
 			&::after {
 				left: 1px;
     		top: 0.5px;
@@ -12491,10 +12520,11 @@ html.with-fancybox body.hide-scrollbar {
 	}
 
 	&__label {
+		position: relative;
 		display: inline-flex;
 		align-items: center;
 		cursor: pointer;
-		gap: 10px;
+		padding-left: 22px;
 
 		&:hover {
 			&::after {
@@ -12504,9 +12534,11 @@ html.with-fancybox body.hide-scrollbar {
 
 		&:before {
 			content: '';
-			align-self: flex-start;
-			transform: translateY(26%);
-			flex: 0 0 12px;
+			position: absolute;
+			left: 3px;
+			top: calc(var(--height) / 2);
+			transform: translateY(-50%);
+
 			width: 12px;
 			height: 12px;
 			border-radius: 50%;
@@ -12515,14 +12547,16 @@ html.with-fancybox body.hide-scrollbar {
 
 		&:after {
 			content: '';
+			position: absolute;
+			left: 3px;
+			top: calc(var(--height) / 2);
+			transform: translate(50%, -50%);
+
 			transition: all 0.3s ease 0s;
 			width: 6px;
 			height: 6px;
 			border-radius: 50%;
 			background-color: transparent;
-			position: absolute;
-			left: 3px;
-			top: 6.5px;
 		}
 	}
 
@@ -12604,6 +12638,9 @@ html.with-fancybox body.hide-scrollbar {
 .rate-col {
 	display: grid;
 	grid-template-rows: 30px auto;
+	@media (max-width: 560px) {
+		grid-template-rows: 56px auto;
+	}
 	gap: 22px;
 
 	&__title {
@@ -12661,7 +12698,7 @@ html.with-fancybox body.hide-scrollbar {
 
 .rate-item__body {
 	@media (max-width: 560px) {
-		padding-left: 16px;
-		padding-right: 16px;
+		padding-left: 16px !important;
+		padding-right: 16px !important;
 	}
 }
