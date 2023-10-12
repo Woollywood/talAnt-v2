@@ -115,15 +115,48 @@ async function serverAPILoad() {
 		let data = await response.json();
 		renderElems(data.config);
 
-		labelsHeightObserve();
-		window.addEventListener('resize', labelsHeightObserve);
-
 		rates = new Rates();
 		rates.sumSystem(document.querySelector('#rates-system').querySelector('[data-calc]'));
 		rates.sumMarket(document.querySelector('#rates-marketplace').querySelector('[data-calc="marketplace"]'));
 		rates.sumResult();
 		document.addEventListener('click', rates);
+	} else {
+		const titleError = document.createElement('h2');
+		titleError.classList.add('title-error');
+		titleError.innerHTML = 'Ошибка загрузки данных';
 	}
+
+	afterLoad();
+}
+
+function afterLoad() {
+	const body = document.querySelector('.rates__body');
+	const bodyInner = body.querySelector('.rates__body-inner');
+	const preloader = body.querySelector('.preloader-wrapper');
+
+	bodyInner.style.display = '';
+	preloader.remove();
+
+	labelsHeightObserve();
+	window.addEventListener('resize', labelsHeightObserve);
+}
+
+function preloader(element) {
+	const preloader = document.createElement('div');
+	preloader.classList.add('preloader-wrapper');
+	preloader.innerHTML = `
+		<div class="lds-roller">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+	`;
+	element.append(preloader);
 }
 
 /**

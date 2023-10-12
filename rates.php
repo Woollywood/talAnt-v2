@@ -113,93 +113,98 @@ include "functions/xajaxFunctionsCalc_sum.php";
 					<div class="rates__container">
 						<div class="rates__body">
 							<h2 class="rates__title title-font">Тарифы</h2>
-							<div class="rates__row">
-								<div class="rates__column" id="rates-system">
-									<div class="rate-item">
-										<div class="rate-item__top">
-											<div class="rate-item__top-title">Подключение к системе</div>
-											<div class="rate-item__top-text text-font">
-												Интегрируйте систему учета, чтобы упростить работу сотрудников и сразу
-												выйти на высокий уровень продажна новой площадке
+							<div class="rates__body-inner" style="display: none;">
+								<div class="rates__row">
+									<div class="rates__column" id="rates-system">
+										<div class="rate-item">
+											<div class="rate-item__top">
+												<div class="rate-item__top-title">Подключение к системе</div>
+												<div class="rate-item__top-text text-font">
+													Интегрируйте систему учета, чтобы упростить работу сотрудников и сразу
+													выйти на высокий уровень продажна новой площадке
+												</div>
+												<div class="rate-item__top-text text-font">
+													Базовая цена:
+													<span><span data-default-price="system">??</span> ₽/мес.</span>
+												</div>
 											</div>
-											<div class="rate-item__top-text text-font">
-												Базовая цена:
-												<span><span data-default-price="system">??</span> ₽/мес.</span>
-											</div>
+											<form class="rate-item__body">
+												<div class="rate-item__body-inner" data-fetch="first"></div>
+											</form>
 										</div>
-										<form class="rate-item__body">
-											<div class="rate-item__body-inner" data-fetch="first"></div>
-										</form>
 									</div>
-								</div>
-								<div class="rates__column rates__column--marketplace" id="rates-marketplace">
-									<div class="rate-item">
-										<div class="rate-item__top">
-											<div class="rate-item__top-title">Подключение к Marketplace</div>
-											<div class="rate-item__top-text text-font">
-												Интегрируйте систему учета, чтобы упростить работу сотрудников и сразу
-												выйти на высокий уровень продажна новой площадке
+									<div class="rates__column rates__column--marketplace" id="rates-marketplace">
+										<div class="rate-item">
+											<div class="rate-item__top">
+												<div class="rate-item__top-title">Подключение к Marketplace</div>
+												<div class="rate-item__top-text text-font">
+													Интегрируйте систему учета, чтобы упростить работу сотрудников и сразу
+													выйти на высокий уровень продажна новой площадке
+												</div>
+												<div class="rate-item__top-text text-font">
+													Базовая цена:
+													<span><span data-default-price="marketplace">??</span> ₽/мес.</span>
+												</div>
 											</div>
-											<div class="rate-item__top-text text-font">
-												Базовая цена:
-												<span><span data-default-price="marketplace">??</span> ₽/мес.</span>
-											</div>
-										</div>
-										<div class="rate-item__body">
-											<div class="rate-item__body-title">Выберите необходимые маркеты</div>
-											<form class="rate-item__marketplace-list">
-												<div class="rate-col__options">
-													<div class="options options--second">
-														<div class="options__item" data-calc="selected-marketplace">
-															<input
-																id="ozon"
-																class="options__input"
-																type="checkbox"
-																name="option" />
-															<label for="ozon" class="options__label"
-																><span class="options__text">OZON</span></label
-															>
-														</div>
-														<div class="options__item" data-calc="selected-marketplace">
-															<input
-																id="yamarket"
-																class="options__input"
-																type="checkbox"
-																name="option" />
-															<label for="yamarket" class="options__label"
-																><span class="options__text">Яндекс маркет</span></label
-															>
-														</div>
-														<div class="options__item" data-calc="selected-marketplace">
-															<input
-																id="wildberries"
-																class="options__input"
-																type="checkbox"
-																name="option" />
-															<label for="wildberries" class="options__label"
-																><span class="options__text">Wildberries</span></label
-															>
+											<div class="rate-item__body">
+												<div class="rate-item__body-title">Выберите необходимые маркеты</div>
+												<form class="rate-item__marketplace-list">
+													<div class="rate-col__options">
+														<div class="options options--second">
+															<div class="options__item" data-calc="selected-marketplace">
+																<input
+																	id="ozon"
+																	class="options__input"
+																	type="checkbox"
+																	name="option" />
+																<label for="ozon" class="options__label"
+																	><span class="options__text">OZON</span></label
+																>
+															</div>
+															<div class="options__item" data-calc="selected-marketplace">
+																<input
+																	id="yamarket"
+																	class="options__input"
+																	type="checkbox"
+																	name="option" />
+																<label for="yamarket" class="options__label"
+																	><span class="options__text">Яндекс маркет</span></label
+																>
+															</div>
+															<div class="options__item" data-calc="selected-marketplace">
+																<input
+																	id="wildberries"
+																	class="options__input"
+																	type="checkbox"
+																	name="option" />
+																<label for="wildberries" class="options__label"
+																	><span class="options__text">Wildberries</span></label
+																>
+															</div>
 														</div>
 													</div>
-												</div>
-											</form>
-											<div class="rate-item__body-inner" data-fetch="second"></div>
-											<div class="options__range-wrapper" data-calc="range">
-												<div class="options__range-title">Количество карточек</div>
-												<div class="options__range-input">
-													<input class="options__range" type="number" value="0" />
+												</form>
+												<div class="rate-item__body-inner" data-fetch="second"></div>
+												<div class="options__range-wrapper" data-calc="range">
+													<div class="options__range-title">Количество карточек</div>
+													<div class="options__range-input">
+														<input class="options__range" type="number" value="0" />
+													</div>
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
+								<div class="rates__result">
+									Итоговая стоимость:
+									<span class="rates__result-value" data-rate-sum>???</span> ₽ /
+									день.
+								</div>
+								<span id="result_span" style="display: none;"></span>
 							</div>
-							<div class="rates__result">
-								Итоговая стоимость:
-								<span class="rates__result-value" data-rate-sum>???</span> ₽ /
-								день.
+							<div class="preloader-wrapper">
+								<div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
 							</div>
-							<span id="result_span" style="display: none;"></span>
 						</div>
 					</div>
 				</section>
