@@ -25,11 +25,13 @@ class Rates {
 
 		this._resultJson = document.querySelector('#result_span');
 		this._resultOutput = document.querySelector('[data-rate-sum]');
+		this._resultFloatingOutputList = document.querySelectorAll('.floating-result__value');
 		this._resultJsonData = 0;
 
 		this.resultObserver = new MutationObserver((observerEvent) => {
 			this._resultJsonData = JSON.parse(observerEvent[0].addedNodes[0].data).sum_itog;
 			this._resultOutput.innerHTML = this._resultJsonData;
+			this._resultFloatingOutputList.forEach((result) => (result.innerHTML = this._resultJsonData));
 		});
 
 		this.resultObserver.observe(this._resultJson, {
@@ -44,10 +46,6 @@ class Rates {
 	}
 
 	handleEvent(event) {
-		if (event.pointerId !== -1) {
-			return;
-		}
-
 		const target = event.target.closest('[data-calc]');
 		const dataType = target?.dataset.calc;
 
@@ -114,16 +112,15 @@ async function serverAPILoad() {
 	if (response.ok) {
 		let data = await response.json();
 		renderElems(data.config);
+		setTimeout(() => {
+			floatingResultInit();
+		}, 1000);
 
 		rates = new Rates();
 		rates.sumSystem(document.querySelector('#rates-system').querySelector('[data-calc]'));
 		rates.sumMarket(document.querySelector('#rates-marketplace').querySelector('[data-calc="marketplace"]'));
 		rates.sumResult();
 		document.addEventListener('click', rates);
-	} else {
-		const titleError = document.createElement('h2');
-		titleError.classList.add('title-error');
-		titleError.innerHTML = 'Ошибка загрузки данных';
 	}
 
 	afterLoad();
@@ -139,24 +136,6 @@ function afterLoad() {
 
 	labelsHeightObserve();
 	window.addEventListener('resize', labelsHeightObserve);
-}
-
-function preloader(element) {
-	const preloader = document.createElement('div');
-	preloader.classList.add('preloader-wrapper');
-	preloader.innerHTML = `
-		<div class="lds-roller">
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-		</div>
-	`;
-	element.append(preloader);
 }
 
 /**
@@ -359,7 +338,7 @@ rateBodyList.forEach((rateBody) => {
 			input.setAttribute('min', inputMin);
 			input.setAttribute('max', inputMax);
 
-			// input.value = target.closest('.options__item').dataset.min;
+			input.value = target.closest('.options__item').dataset.min;
 
 			imask = IMask(input, {
 				mask: Number,
@@ -378,4 +357,29 @@ function labelsHeightObserve() {
 		const labelBox = label.getBoundingClientRect();
 		label.style.cssText = `--height: ${labelBox.height}px`;
 	}
+}
+
+function floatingResultInit() {
+	gsap.registerPlugin(ScrollTrigger);
+
+	const ratesBody = document.querySelector('.rates__row');
+	const floatingResult = document.querySelector('.floating-result');
+
+	ScrollTrigger.create({
+		trigger: ratesBody,
+		start: 'top 40%',
+		end: 'bottom bottom',
+
+		onEnter: (e) => {
+			floatingResult.classList.add('shown');
+		},
+
+		onEnterBack: (e) => {
+			floatingResult.classList.add('shown');
+		},
+
+		onLeave: (e) => {
+			floatingResult.classList.remove('shown');
+		},
+	});
 }

@@ -27,6 +27,12 @@ include "functions/xajaxFunctionsCalc_sum.php";
 <? $xajax->printJavascript("xajax"); ?>
 	<body>
 		<div class="wrapper">
+			<button class="floating-result" type="button">
+				<div class="floating-result__inner">
+				Итоговая стоимость: <span class="floating-result__value">???</span> ₽ / день.
+				</div>
+			</button>
+
 			<div class="popup-panel" style="display: none">
 				<a class="popup-panel__popup-thanks" href="#" data-popup="#thanks-popup"></a>
 			</div>
@@ -36,40 +42,112 @@ include "functions/xajaxFunctionsCalc_sum.php";
 					<div class="body-header__container">
 						<div class="body-header__body">
 							<div class="body-header__logo">
+								<a class="body-header__logo-wrapper" href="index.html">
+									<img src="img/logo.svg" alt="logo-img" />
+								</a>
+							</div>
+							<div class="body-header__menu menu">
 								<button
 									type="button"
 									class="menu__icon icon-menu"
 									data-da=".body-header__logo, 768, first">
 									<span></span>
 								</button>
-								<a class="body-header__logo-wrapper" href="index.html">
-									<img src="img/logo.svg" alt="logo-img" />
-								</a>
+								<nav class="menu__body">
+									<ul class="menu__list">
+										<li class="menu__item">
+											<a class="menu__link" href="index.html#section-1">Видео-обзор</a>
+										</li>
+										<li class="menu__item">
+											<a class="menu__link" href="index.html#section-2">Разработка</a>
+										</li>
+										<li class="menu__item">
+											<a class="menu__link" href="index.html#section-3">Механика</a>
+										</li>
+										<li class="menu__item">
+											<a class="menu__link" href="index.html#section-4">Система работы</a>
+										</li>
+										<li class="menu__item">
+											<a class="menu__link" href="index.html#section-5">Разница</a>
+										</li>
+										<li class="menu__item">
+											<a class="menu__link" href="index.html#section-6">Сравнение с аналогами</a>
+										</li>
+									</ul>
+								</nav>
 							</div>
-							<div class="body-header__actions">
-								<div class="body-header__phone phone-header">
-									<a class="phone-header__icon-wrapper" href="tel:89376444446">
-										<div class="phone-header__icon _icon-phone"></div>
-									</a>
-									<div class="phone-header__body">
-										<a href="tel:88004442742" class="phone-header__phone">8-800-444-27-42</a>
-										<a class="phone-header__link" href="#" data-popup="#phone-request-popup"
-											>Заказать звонок</a
-										>
+							<div class="body-header__more-menu more-menu" data-spollers>
+								<details class="more-menu__details">
+									<summary class="more-menu__title" data-spoller-close>
+										<div class="more-menu__icon-wrapper">
+											<div class="more-menu__icon _icon-chevron-down"></div>
+										</div>
+										<div class="more-menu__title-text">Ещё</div>
+									</summary>
+									<div class="more-menu__body">
+										<ul class="more-menu__list">
+											<li class="menu__item">
+												<a class="menu__link" href="index.html#section-7"
+													>Упрощение торговли</a
+												>
+											</li>
+											<li class="menu__item">
+												<a class="menu__link" href="index.html#section-8">Обучение</a>
+											</li>
+											<li class="menu__item">
+												<a class="menu__link" href="index.html#section-9">На связи 24/7</a>
+											</li>
+											<li class="menu__item">
+												<a class="menu__link" href="index.html#section-10"
+													>Используем сами</a
+												>
+											</li>
+											<li class="menu__item">
+												<a class="menu__link" href="index.html#section-11"
+													>Начинающие и опытные</a
+												>
+											</li>
+											<li class="menu__item">
+												<a class="menu__link" href="index.html#section-12"
+													>Гибкая тарификация</a
+												>
+											</li>
+											<li class="menu__item">
+												<a class="menu__link" href="index.html#section-13"
+													>Объективный взгляд</a
+												>
+											</li>
+											<li class="menu__item">
+												<a class="menu__link" href="index.html#section-14"
+													>Становитесь партнером</a
+												>
+											</li>
+										</ul>
 									</div>
+								</details>
+							</div>
+							<div class="body-header__phone phone-header">
+								<a class="phone-header__icon-wrapper" href="tel:89376444446">
+									<div class="phone-header__icon _icon-phone"></div>
+								</a>
+								<div class="phone-header__body">
+									<a href="tel:88004442742" class="phone-header__phone">8-800-444-27-42</a>
+									<a class="phone-header__link" href="#" data-popup="#phone-request-popup"
+										>Заказать звонок</a
+									>
 								</div>
-								<a
-									class="body-header__login login-header"
-									href="#"
-									data-popup="#login-control-panel-popup"
-									data-da=".bottom-header__mobile, 767.98, first">
-									<div class="login-header__icon-wrapper">
-										<div class="login-header__icon _icon-log-in"></div>
-									</div>
-									<div class="login-header__text">Войти</div>
-									<div class="login-header__text login-header__text_mobile">Войти в систему</div>
-								</a>
 							</div>
+							<a
+								class="body-header__login login-header"
+								href="#"
+								data-popup="#login-control-panel-popup"
+								data-da=".bottom-header__mobile, 767.98, first">
+								<div class="login-header__icon-wrapper">
+									<div class="login-header__icon _icon-log-in"></div>
+								</div>
+								<div class="login-header__text">Войти</div>
+								<div class="login-header__text login-header__text_mobile">Войти в систему</div>
+							</a>
 						</div>
 					</div>
 				</div>
@@ -94,7 +172,7 @@ include "functions/xajaxFunctionsCalc_sum.php";
 								</div>
 								<div class="bottom-header__text">Контроль продаж</div>
 							</a>
-							<a class="bottom-header__item" href="rates.html">
+							<a class="bottom-header__item" href="rates.php">
 								<div class="bottom-header__icon-wrapper">
 									<div class="bottom-header__icon _icon-calculator"></div>
 								</div>
@@ -505,6 +583,8 @@ include "functions/xajaxFunctionsCalc_sum.php";
 			</div>
 		</div>
 
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 		<script src="https://unpkg.com/imask"></script>
 		<script src="js/rates.js"></script>
 		<script src="js/app.js"></script>
