@@ -28,11 +28,22 @@ class Rates {
 		this._resultFloatingOutputList = document.querySelectorAll('.floating-result__value');
 		this._resultJsonData = 0;
 
+		this._marketOptions.forEach((option) => {
+			option.querySelector('input').addEventListener('change', (e) => {
+				this._marketsConntected = Array.from(this._marketOptions).filter(
+					(elem) => elem.querySelector('input').checked
+				).length;
+				this.sumResult();
+			});
+		});
+
 		this.resultObserver = new MutationObserver((observerEvent) => {
 			this._resultJsonData = JSON.parse(observerEvent[0].addedNodes[0].data).sum_itog;
 			this._resultOutput.innerHTML = this._resultJsonData;
 			this._resultFloatingOutputList.forEach((result) => (result.innerHTML = this._resultJsonData));
 		});
+
+		this._imask = null;
 
 		this.resultObserver.observe(this._resultJson, {
 			childList: true,
@@ -45,12 +56,71 @@ class Rates {
 		this._marketsConntected = 0;
 	}
 
-	handleEvent(event) {
+	async handleEvent(event) {
 		const target = event.target.closest('[data-calc]');
 		const dataType = target?.dataset.calc;
 
 		if (!dataType) {
 			return;
+		}
+
+		const rateBody = target.closest('.rate-item__body');
+		const rateInput = document.querySelector('.options__range-wrapper');
+
+		if (
+			target.closest('[data-calc="marketplace"]') &&
+			target.closest('.options__item').classList.contains('input-first')
+		) {
+			rateInput.classList.remove('visible');
+
+			const input = rateInput.querySelector('input');
+			input.setAttribute('min', 0);
+			input.setAttribute('max', 0);
+			input.value = 0;
+		}
+
+		if (
+			target.closest('[data-fetch]') &&
+			target.closest('.options__item') &&
+			!target.closest('.options__item').classList.contains('input-first') &&
+			target.closest('[data-calc="marketplace"]')
+		) {
+			Array.from(document.querySelectorAll('[data-calc="selected-marketplace"]')).filter(
+				(elem) => elem.querySelector('input').checked
+			).length !== 0
+				? (isMarketSelected = true)
+				: (isMarketSelected = false);
+
+			if (!isMarketSelected) {
+				document.querySelector('.options.options--second .options__item input').checked = true;
+				isMarketSelected = true;
+			}
+
+			if (this._imask) {
+				this._imask.destroy();
+			}
+
+			let bodyBox = rateBody.getBoundingClientRect();
+			let targetBox = target.closest('.options__item').getBoundingClientRect();
+
+			rateInput.classList.add('visible');
+			rateInput.style.top = targetBox.top - bodyBox.top - targetBox.height / 2 + 'px';
+
+			const input = rateInput.querySelector('input');
+			const inputMin = target.closest('.options__item').dataset.min;
+			const inputMax = target.closest('.options__item').dataset.max;
+			input.setAttribute('min', inputMin);
+			input.setAttribute('max', inputMax);
+
+			input.value = target.closest('.options__item').dataset.min;
+
+			this._imask = IMask(input, {
+				mask: Number,
+				min: +inputMin,
+				max: +inputMax,
+				thousandsSeparator: '',
+			});
+			input.focus();
 		}
 
 		switch (dataType) {
@@ -61,19 +131,13 @@ class Rates {
 				this.sumMarket(target);
 				break;
 			case 'range':
-				console.log('eqewwq');
 				this.sumMarketRange(target);
-				break;
-			case 'selected-marketplace':
-				this.sumMarketSelected(target);
 				break;
 			default:
 				break;
 		}
 
 		this.sumResult();
-
-		console.log('calculated...');
 	}
 
 	sumSystem(target) {
@@ -93,14 +157,18 @@ class Rates {
 		).length;
 	}
 
-	sumMarketSelected(target) {
-		this._marketsConntected = Array.from(this._marketOptions).filter(
-			(elem) => elem.querySelector('input').checked
-		).length;
+	async sumMarketSelected(target) {
+		return new Promise((resolve) => {
+			setTimeout(() => {
+				this._marketsConntected = Array.from(this._marketOptions).filter(
+					(elem) => elem.querySelector('input').checked
+				).length;
+				resolve(true);
+			}, 100);
+		});
 	}
 
 	sumResult() {
-		console.log(this);
 		xajax_calc_sum(this._sklad, this._user, this._items, this._itemsMarket, this._marketsConntected);
 	}
 }
@@ -120,7 +188,7 @@ async function serverAPILoad() {
 		rates.sumSystem(document.querySelector('#rates-system').querySelector('[data-calc]'));
 		rates.sumMarket(document.querySelector('#rates-marketplace').querySelector('[data-calc="marketplace"]'));
 		rates.sumResult();
-		document.addEventListener('click', rates);
+		document.addEventListener('mousedown', rates);
 	}
 
 	afterLoad();
@@ -283,73 +351,6 @@ function setDefaultPrice(body, type, value) {
 let isMarketSelected = false;
 const resultSpanJson = document.querySelector('#result_span');
 const resultSpan = document.querySelector('.rates__result-value');
-
-const rateBodyList = document.querySelectorAll('.rate-item__body');
-rateBodyList.forEach((rateBody) => {
-	const rateInput = document.querySelector('.options__range-wrapper');
-
-	let imask = null;
-
-	rateBody.addEventListener('click', async (e) => {
-		const target = e.target;
-
-		if (
-			target.closest('[data-calc="marketplace"]') &&
-			target.closest('.options__item').classList.contains('input-first')
-		) {
-			rateInput.classList.remove('visible');
-
-			const input = rateInput.querySelector('input');
-			input.setAttribute('min', 0);
-			input.setAttribute('max', 0);
-			input.value = 0;
-		}
-
-		if (
-			target.closest('[data-fetch]') &&
-			target.closest('.options__item') &&
-			!target.closest('.options__item').classList.contains('input-first') &&
-			target.closest('[data-calc="marketplace"]')
-		) {
-			Array.from(document.querySelectorAll('[data-calc="selected-marketplace"]')).filter(
-				(elem) => elem.querySelector('input').checked
-			).length !== 0
-				? (isMarketSelected = true)
-				: (isMarketSelected = false);
-
-			if (!isMarketSelected) {
-				document.querySelector('.options.options--second .options__item input').checked = true;
-				isMarketSelected = true;
-			}
-
-			if (imask) {
-				imask.destroy();
-			}
-
-			let bodyBox = rateBody.getBoundingClientRect();
-			let targetBox = target.closest('.options__item').getBoundingClientRect();
-
-			rateInput.classList.add('visible');
-			rateInput.style.top = targetBox.top - bodyBox.top - targetBox.height / 2 + 'px';
-
-			const input = rateInput.querySelector('input');
-			const inputMin = target.closest('.options__item').dataset.min;
-			const inputMax = target.closest('.options__item').dataset.max;
-			input.setAttribute('min', inputMin);
-			input.setAttribute('max', inputMax);
-
-			input.value = target.closest('.options__item').dataset.min;
-
-			imask = IMask(input, {
-				mask: Number,
-				min: +inputMin,
-				max: +inputMax,
-				thousandsSeparator: '',
-			});
-			input.focus();
-		}
-	});
-});
 
 function labelsHeightObserve() {
 	let labels = document.querySelectorAll('.options__label');
